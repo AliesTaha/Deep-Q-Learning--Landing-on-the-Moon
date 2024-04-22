@@ -53,23 +53,36 @@ Above shows agent-environment loop. Here:
 <ul>
 <li> Agent interacts with environment in discrete steps t=0,1,2,3...
 <li> Each step t, agent uses policy π to select action $A_t$  based on current state $S_t$
-<li> Agent receives reward R_t
-<li> Next time step is the new state S_(t+1)
+<li> Agent receives reward $R_t$
+<li> Next time step is the new state $S_{t+1}$
 
 # Deep Q Learning
 When both the state and action space are discrete we can estimate the action-value function iteratively by using the Bellman equation:
 
-$$ Q(s,a) = R(s) + \gamma \max_{a'}Q(s',a') $$
+$$\ Q(s,a) = R(s) + \gamma \max_{a'}Q(s',a') $$
 
-Here, \( Q(s,a) \) is the return if you start in state \( s \), take action \( a \), then behave optimally after that. \( \pi(s) = a \) where \( a \) is chosen. This only works if you can compute \( Q(s,a) \) for every action. Note that \( s' \) means the new state we got to after taking action \( a \). The prime represents a new action or new state.
+Here, $Q(s,a)$ is the return if you start in state s, take action a, then behave optimally after that. π(s)=a where a is $max_{a}Q(s,a)$. This only works if you can compute Q(s,a) for every action. 
+Note that ${s'}$ means the new state we got to after taking action $a$. The prime represents new action/new state.
 
-The above Bellman equation is similar to $$ f_{w,b}(x) \approx y $$ Getting the actual \( (x,y) \) points is simple. We do random actions and get various states. Based on these states, we determine \( x \) as the (state, action) tuple, and \( y \) as the right hand side of the Bellman equation, as determined by \( R(s) \) and \( S \), both of which are given.
+The above bellman equation is similar to 
+$$\ f_{w,b}(x)≈y $$
 
-Above, we see that \( y \) is determined by \( R(s) + \gamma \times \max_{a'} Q(s',a') \). Now, how do we know what the maximum of \( Q \) is? We need to calculate \( Q \) for all possible actions in state \( s' \) to get the maximum. Since \( Q \) is recursive, initially we don't know what the \( Q \) function is. So at every step, \( Q \) here is some guess.
+Getting the actual $(x,y)$ points is simple. We do random actions and get various states. Based on these states, we determine x as the (**state,action**) tuple, and $y$ as the right hand side of the bellman equation, as determined by $R(s)$ and $S$, both of which are given.
 
-Once we have the above data, we train a Neural Network to try to predict \( y \) as a function of the input \( x \).
+<img src='images/GettingXY.jpg' width=40%><br>
 
-The iterative method converges to the optimal action-value function \( Q^*(s,a) \) as \( i \) approaches infinity.
+Above, we see that y is determined by R(s) + $ \gamma\ $ times the max of the Q of...pay attention... the new reached state having taken action $a$. Now, how do we know what the maximum of Q is? We need to calculate Q for all possible actions in state $s^{'}$ to get the maximum. Since Q is recursive, initially we don't know what the Q function is. So at every step, Q here is some guess. 
 
-So the agent gradually explores the state-action space and updates the estimate of the action-value function \( Q \) until it converges to the optimal action-value function.
+Once we have above data, we train Neural Network to try to predict y as a function of the input x. 
 
+The iterative method converges to the optimal action-value function Q*(s,a) as i-> $\infty$ 
+- So the agent gradually explores the state-action space and updates the **estimate** of action-value function $Q(s,a)$ till it converges to optimal action-value function $Q^*(s,a)$
+#### Problem
+This works for regular discrete state space, but when it's continuous, it's impossible to explore the entire state-action space, and impossible to gradually estimate $Q(s,a)$ till its convergence
+
+The solution is in **Deep Q Learning** wherein we solve the problem by using a neural network to estimate the action-value function $Q(s,a)≈Q^*(s,a)$
+- This neural network is the Q-Network, trained by adjusting its weights to minimize mean-squared error in Bellman equation above
+#### One more problem
+Q-Networks are highly unstable. Instead, we use 
+1. Target Network 
+2. Experience Replay. 
