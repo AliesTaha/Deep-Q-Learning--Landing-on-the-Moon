@@ -52,7 +52,7 @@ The agent learns an optimal policy — mapping `states` to `actions` — through
 Above shows agent-environment loop. Here:
 <ul>
 <li> Agent interacts with environment in discrete steps t=0,1,2,3...
-<li> Each step t, agent uses policy π to select action A_t based on current state S_t
+<li> Each step t, agent uses policy π to select action $A_t$  based on current state $S_t$
 <li> Agent receives reward R_t
 <li> Next time step is the new state S_(t+1)
 
