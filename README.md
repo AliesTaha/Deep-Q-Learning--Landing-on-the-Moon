@@ -89,32 +89,30 @@ Q-Networks are highly unstable. Instead, we use
 2. Experience Replay
 
 # Creating the networks
-Deep-$Q$ Network -DQN- is a neural network that approximates the action-value function $Q(s,a)$ ≈ $Q^*(s,a)$. This is done by mapping states to $Q$ values. 
+Deep $-$ $Q$ Network -DQN- is a neural network that approximates the action-value function $Q(s,a)$ ≈ $Q^*(s,a)$. This is done by mapping states to $Q$ values. 
 
 To recap:
 1. We use a neural network to create the optimal action-value function. 
 2. To do that, we create another target neural network called $\hat{Q}$ Network with the same architecture as the original network. 
 
 Now the equation becomes:
-$$
-\overbrace{\underbrace{R + \gamma \max_{a'}\hat{Q}(s',a'; w^-)}_{\rm {y~target}} - Q(s,a;w)}^{\rm {Error}}
-$$
+$$\overbrace{\underbrace{R + \gamma \max_{a'}\hat{Q}(s',a'; w^-)}_{\rm {y~target}} - Q(s,a;w)}^{\rm {Error}} $$
 
 where $w^-$ and $w$ are the weights of the target-Q network and Q network, respectively.
 
 ## Architecture
 See below:<br>
-<img src='images/NeuralNetwork.jpg' width=50%>
+<img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/edit/main/images/NeuralNetwork.jpg' width=50%>
 
 # Training the network
 
 The algorithm is as follows:
 
-Initialize randomly as a guess of Q(s,a)
+Initialize randomly as a guess of $Q(s,a)$
 
 Repeat:
--    Take actions in the lunar lander, getting (s,a,R(s),s')
--    Store 10,000 most recent (s,a,R(s),s') tuples ``Replay Buffer``
+-    Take actions in the lunar lander, getting $(s,a,R(s),s')$
+-    Store 10,000 most recent $(s,a,R(s),s')$ tuples ``Replay Buffer``
 -    Train Neural Network:
         - Create training set of 10,000 (maybe less like 1000 random if you're doing mini-batch) examples -> x=(s,a) and y= R(s) + $\gamma\$ $max_{a'}$ Q(s',a')
         - Train $Q_{new}$ such that its ≈ y
