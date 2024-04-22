@@ -1,5 +1,7 @@
 """
 Utilities module containing helper functions for the Deep Q-Learning - Lunar Lander
+Jupyter notebook (C3_W3_A1_Assignment) from DeepLearning.AI's "Unsupervised Learning,
+Recommenders, Reinforcement Learning" course on Coursera.
 """
 
 import base64
@@ -179,30 +181,7 @@ def update_target_network(q_network, target_q_network):
 def plot_history(point_history, **kwargs):
     """
     Plots the total number of points received by the agent after each episode together
-    with the moving average (rolling mean). 
-
-    Args:
-        point_history (list):
-            A list containing the total number of points the agent received after each
-            episode.
-        **kwargs: optional
-            window_size (int):
-                Size of the window used to calculate the moving average (rolling mean).
-                This integer determines the fixed number of data points used for each
-                window. The default window size is set to 10% of the total number of
-                data points in point_history, i.e. if point_history has 200 data points
-                the default window size will be 20.
-            lower_limit (int):
-                The lower limit of the x-axis in data coordinates. Default value is 0.
-            upper_limit (int):
-                The upper limit of the x-axis in data coordinates. Default value is
-                len(point_history).
-            plot_rolling_mean_only (bool):
-                If True, only plots the moving average (rolling mean) without the point
-                history. Default value is False.
-            plot_data_only (bool):
-                If True, only plots the point history without the moving average.
-                Default value is False.
+    with the moving average (rolling mean). se.
     """
 
     lower_limit = 0
@@ -343,8 +322,8 @@ def display_table(current_state, action, next_state, reward, done):
             (STATE_VECTOR_COL_NAME, 'Velocity', 'Y (Vertical)'): get_state(3),
             (STATE_VECTOR_COL_NAME, 'Tilting', 'Angle'): get_state(4),
             (STATE_VECTOR_COL_NAME, 'Tilting', 'Angular Velocity'): get_state(5),
-            (STATE_VECTOR_COL_NAME, 'Ground contact', 'Left Leg?'): get_state(6, sbool),
-            (STATE_VECTOR_COL_NAME, 'Ground contact', 'Right Leg?'): get_state(7, bool),
+            (STATE_VECTOR_COL_NAME, 'Ground contact', 'Left Leg?'): get_state(6, np.bool),
+            (STATE_VECTOR_COL_NAME, 'Ground contact', 'Right Leg?'): get_state(7, np.bool),
             (DERIVED_COL_NAME, 'Distance from landing pad', ''): get_state(8),
             (DERIVED_COL_NAME, 'Velocity', ''): get_state(9),
             (DERIVED_COL_NAME, 'Tilting Angle (absolute value)', ''): get_state(10),
@@ -423,12 +402,13 @@ def create_video(filename, env, q_network, fps=30):
     with imageio.get_writer(filename, fps=fps) as video:
         done = False
         state = env.reset()
-        frame = env.render(mode="rgb_array")
+        state = state[0]
+        frame = env.render()
         video.append_data(frame)
         while not done:
             state = np.expand_dims(state, axis=0)
             q_values = q_network(state)
             action = np.argmax(q_values.numpy()[0])
-            state, _, done, _ = env.step(action)
-            frame = env.render(mode="rgb_array")
+            state, _, done, _, _ = env.step(action)
+            frame = env.render()
             video.append_data(frame)
