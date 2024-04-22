@@ -402,13 +402,15 @@ def create_video(filename, env, q_network, fps=30):
     with imageio.get_writer(filename, fps=fps) as video:
         done = False
         state = env.reset()
+        iteration_count = 0  # Initialize counter for iterations
         state = state[0]
         frame = env.render()
         video.append_data(frame)
-        while not done:
+        while not done and iteration_count < 300:
             state = np.expand_dims(state, axis=0)
             q_values = q_network(state)
             action = np.argmax(q_values.numpy()[0])
             state, _, done, _, _ = env.step(action)
             frame = env.render()
             video.append_data(frame)
+            iteration_count += 1

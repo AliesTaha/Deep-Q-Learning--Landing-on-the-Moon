@@ -1,2 +1,3 @@
 # Deep-Q-Learning--Landing-on-the-Moon
- Adding the Repository
+
+![Description of GIF](videos/readMe_crash.gif)
