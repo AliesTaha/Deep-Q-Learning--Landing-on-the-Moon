@@ -161,5 +161,5 @@ Finally, we wanted to note that we have included some extra variables to keep tr
 </figure>
 <br>
 
-# Credit
+# Credits
 A huge thank you to Professor Andrew NG, who introduced me to this project, and for the guidance he provided in this project. 
