@@ -162,4 +162,5 @@ Finally, we wanted to note that we have included some extra variables to keep tr
 <br>
 
 # Credits
-A huge thank you to Professor Andrew NG, who introduced me to this project, and for the guidance he provided in this project. 
+A huge thank you to Professor Andrew NG, who's Stanford Online course - Unsupervised ML: Recommenders and Reinforcement Learning - introduced me to this project, and for the guidance he provided in this project. 
+<a href="https://github.com/AliesTaha/Stanford-ML/files/15004453/Unsupervised.Learning.Recommenders.Reinforcement.Learning.pdf"> <img src="https://github.com/AliesTaha/Stanford-ML/assets/103478551/48778e8d-4986-4b57-b23d-33d830e2d6af" width='400">
