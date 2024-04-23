@@ -107,51 +107,25 @@ For our sake, we have 4 possible actions: (Do Nothing, Fire Left Engine, Fire Ri
 
 The neural network's output layer, therefore, must have 4 nodes. Each ouptut node displays the result of $Q(s,a_{node_{num}})$, or the resulting $Q$ if the action that node represents is taken. This makes it more efficient since, instead of running through the neural network each time with a different action, we simply take the action whose output node has the maximum value, since that is the optimal action. 
 
-Through experimentation, we get 2 hidden layers. Each one of which has 64 nodes and uses a relu activation function. Simply speaking, the weight of the first layer will be a matrix of shape [`12` (num of environment features (8) + num of actions(4)) X `64` (num of nodes)]. This means that when it is fed an input of 12 features (columns) per row, for as many rows as there are training points in the batch, it outputs a (`batch_size`X`64`) matrix into the second hidden layer.
+Through experimentation, we get 2 hidden layers. Each one of which has 64 nodes and uses a relu activation function. Simply speaking, the weight of the first layer will be a matrix of shape [`12` (num of environment features (8) + num of actions(4)) `X` `64` (num of nodes)]. This means that when it is fed an input of 12 features (columns) per row, for as many rows as there are training points in the batch, it outputs a (`batch_size` `X` `64`) matrix into the second hidden layer.
 
-It follows that the second layer will have a [`64` (number of previous nodes) X `64` (number of current nodes)] matrix, which when fed the output of the first layer, gives another (`batch_size`X`64`) matrix into the final output layer. 
+It follows that the second layer will have a [`64` (number of previous nodes) `X` `64` (number of current nodes)] matrix, which when fed the output of the first layer, gives another (`batch_size` `X` `64`) matrix into the final output layer. 
 
-Finally, the output layer has a [`64` (number of previous nodes) X `4` (number of current nodes)], and as such outputs a final matrix of shape (`batch_size`X`4`), where each row is a separate training example, and each column is the *output* of the $Q$ function if action $a_{column_{num}}$ is taken from that given state. 
+Finally, the output layer has a [`64` (number of previous nodes) `X` `4` (number of current nodes)], and as such outputs a final matrix of shape (`batch_size` `X` `4`), where each row is a separate training example, and each column is the *output* of the $Q$ function if action $a_{column_{num}}$ is taken from that given state. 
 
 To clarify, see below:<br>
 <img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/NeuralNetwork.jpg' width=50%>
 
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Hourglass%20Not%20Done.png" alt="Hourglass Not Done" width="25" height="25" /> Training the network
-
-The algorithm is as follows:
-
-Initialize randomly as a guess of $Q(s,a)$
-
-Repeat:
--    Take actions in the lunar lander, getting $(s,a,R(s),s')$
--    Store 10,000 most recent $(s,a,R(s),s')$ tuples ``Replay Buffer``
--    Train Neural Network:
-        - Create training set of 10,000 (maybe less like 1000 random if you're doing mini-batch) examples -> x=(s,a) and y= R(s) + $\gamma\$ $max_{a'}$ Q(s',a')
-        - Train $Q_{new}$ such that its ≈ y
-- Set $Q$=$Q_{new}
-
-In practice:
-- Every $C$ time steps, we will use the $\hat{Q}$-Network to generate y targets and update the weights of the $\hat{Q}$-Network using the weights of the ${Q}$-Network.
-- We will update the weights $w^-$ of the target network using a **soft update**.
-This means updating the weights of $w^-$ using":
-$$
-w^-\leftarrow \tau w + (1 - \tau) w^-
-$$
-
-where $\tau \ll 1$. By using the soft update we ensure the target value $y$ changes slowly, which improves stability $ -> (sometimes we do $Q = 0.9Q + 0.1Q_{new}$ so that if the new neural network is worse than the old one, we do a soft update method)
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Hourglass%20Not%20Done.png" alt="Hourglass Not Done" width="25" height="25" /> Training the network and agent
 
 <img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/training_past.jpg' width=50%>
 <br>
 
 Above shows the progress that the agent makes as we train the network.
 
-# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /> Training the agent
-
-We are now ready to train our agent to solve the Lunar Lander environment. In the cell below we will implement the `Deep Q-Learning with Experience Relay` algorithm. 
-
 * **Line 1**: We initialize the `memory_buffer` with a capacity of $N =$ `MEMORY_SIZE`. Notice that we are using a `deque` as the data structure for our `memory_buffer`.
 
-* **Line 2**: We skip this line since we already initialized the `q_network` - when we created our neural network. 
+* **Line 2**: We initialize the `q_network`. 
 
 * **Line 3**: We initialize the `target_q_network` by setting its weights to be equal to those of the `q_network`.
 
@@ -186,3 +160,6 @@ Finally, we wanted to note that we have included some extra variables to keep tr
       <figcaption style = "text-align: center; font-style: italic">Fig 4. Deep Q-Learning with Experience Replay.</figcaption>
 </figure>
 <br>
+
+# Credit
+A huge thank you to Professor Andrew NG, who introduced me to this project, and for the guidance he provided in this project. 
