@@ -1,5 +1,5 @@
 # Reinforcement Learning (Deep Q Networks) 
-## Landing on the Moon
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Full%20Moon%20Face.png" alt="Full Moon Face" width="40" height="40" /> Landing on the Moon <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Full%20Moon%20Face.png" alt="Full Moon Face" width="40" height="40" />
 
 <table>
   <tr>
@@ -18,7 +18,7 @@
   </tr>
 </table>
 
-# Rules
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Newspaper.png" alt="Newspaper" width="25" height="25" /> Rules
 The OpenAI Gym environment provides LunarLander environment, which is simply a task or problem we want to solve. We will solve Lunar Lander by Reinforcement Learning.
 - The two flag poles surround the center 0,0 of the landing pad
 - Lander is allowed to land outside landing pad
@@ -26,14 +26,14 @@ The OpenAI Gym environment provides LunarLander environment, which is simply a t
 - Fuel is cheap ($\infty$)
 - Need 200 points to win
 
-### The Agent
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Hand%20gestures/Brain.png" alt="Brain" width="25" height="25" />The Agent
 The agent is the entity that learns from interactions with the environment. It makes decisions based on the state of the environment, attempting to achieve a goal. In the case of the Lunar Lander:
 
 **Goal**: Safely land the lunar lander on the landing pad.
 
 **Decision-making**: The agent decides at each time step which action to take from the set of available actions (do nothing, fire right engine, fire main engine, fire left engine).
 
-### The Environment
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/National%20Park.png" alt="National Park" width="25" height="25" /> The Environment
 The environment encompasses everything external to the agent that the agent interacts with. This includes the lunar lander's dynamics, the moon's surface, the landing pad, and the laws of physics that govern how actions affect the state of the lander. In RL, the environment is responsible for:
 - Providing state information to the agent: at each time step, the environment supplies the agent with the current state, which includes the lander’s position, velocity, angle, angular velocity, and whether each leg is touching the ground.
 - Responding to the agent's actions: After an action is taken by the agent, the environment transitions to a new state and provides feedback in the form of a reward signal.
@@ -44,7 +44,7 @@ The environment encompasses everything external to the agent that the agent inte
 - Rewards: Positive and negative feedback provided to guide the agent's learning. Rewards in the Lunar Lander are based on proximity to the target, movement speed, orientation, and successful landing or penalties for crashing.
 - Episode Termination: Conditions under which the current episode (or trial) ends. This could be when the lander lands or crashes, or when it moves out of the designated horizontal boundaries.
 
-### Learning and Optimization
+### <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Memo.png" alt="Memo" width="25" height="25" /> Learning and Optimization
 The agent learns an optimal policy — mapping `states` to `actions` — through repeated interaction with the environment, guided by the reward signals. The agent aims to maximize the cumulative reward over time, which, in this scenario, would mean learning how to land the lander safely and efficiently. Various RL algorithms can be employed to learn this policy, such as Q-learning, deep Q-networks (DQN), or policy gradient methods, depending on the specific requirements and characteristics of the problem and the available data.
 
 <figure>
@@ -57,7 +57,7 @@ Above shows agent-environment loop. Here:
 <li> Agent receives reward $R_t$
 <li> Next time step is the new state $S_{t+1}$
 
-# Deep Q Learning
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Books.png" alt="Books" width="25" height="25" /> Deep Q Learning
 When both the state and action space are discrete we can estimate the action-value function iteratively by using the Bellman equation:
 
 $$\ Q(s,a) = R(s) + \gamma \max_{a'}Q(s',a') $$
@@ -76,7 +76,7 @@ Above, we see that $y$ is determined by $R(s_{prev})$ + $\gamma\$ times the max 
 
 Once we have above data, we train a $Neural$ $Network$ to try to predict $y$ as a function of the input $x$. Just as we would train a neural network to predict any function in supervised learning, given a training set of input features and outputs (targets). 
 
-The agent then gets to gradually explore the state-action space and updates the **estimate** of action-value function $Q(s,a)$ till it converges to optimal action-value function $\hat{Q}(s,a)$. We're still not done though. 
+The agent then gets to gradually explore the state-action space and updates the **estimate** of action-value function $Q(s,a)$ till it converges to optimal action-value function $\hat{Q}(s,a)$. Are we done? <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/People/Person%20Gesturing%20No.png" alt="Person Gesturing No" width="25" height="25" />
 
 ### Problem
 This works for regular discrete state space, since there's only a finite number of state-action space vectors. When it's continuous, however, it's impossible to explore the entire state-action space, and thereby impossible to gradually estimate $Q(s,a)$ till its convergence.
@@ -87,7 +87,7 @@ Using a single Q-Network is highly unstable. Instead, we use
 1. Target Network 
 2. Experience Replay
 
-# Creating the networks
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Animals/Spider%20Web.png" alt="Spider Web" width="25" height="25" /> Creating the networks
 A $Deep-Q$ $Network$ (DQN) is a neural network that approximates the action-value function $Q(s,a)$ ≈ $Q^*(s,a)$. This is done by mapping states to $Q$ values. 
 
 To recap:
@@ -100,13 +100,23 @@ An analogy to think about is as follows: if the $Q$ Network is the student, cons
 Now the equation becomes:
 $$\overbrace{\underbrace{R + \gamma \max_{a'}\hat{Q}(s',a'; w^-)}_{\rm {y~target}} - Q(s,a;w)}^{\rm {Error}} $$
 
-where $w^-$ and $w$ are the weights of the target-$\hat{Q}$ network and $Q$ network, respectively.
+where $w^-$ and $w$ are the weights of the target- $\hat{Q}$ network and $Q$ network, respectively.
 
-## Architecture
-See below:<br>
+## <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Classical%20Building.png" alt="Classical Building" width="25" height="25" /> Architecture
+For our sake, we have 4 possible actions: (Do Nothing, Fire Left Engine, Fire Right Engine, Fire Main Engine).
+
+The neural network's output layer, therefore, must have 4 nodes. Each ouptut node displays the result of $Q(s,a_{node_{num}})$, or the resulting $Q$ if the action that node represents is taken. This makes it more efficient since, instead of running through the neural network each time with a different action, we simply take the action whose output node has the maximum value, since that is the optimal action. 
+
+Through experimentation, we get 2 hidden layers. Each one of which has 64 nodes and uses a relu activation function. Simply speaking, the weight of the first layer will be a matrix of shape [`12` (num of environment features (8) + num of actions(4)) X `64` (num of nodes)]. This means that when it is fed an input of 12 features (columns) per row, for as many rows as there are training points in the batch, it outputs a (`batch_size`X`64`) matrix into the second hidden layer.
+
+It follows that the second layer will have a [`64` (number of previous nodes) X `64` (number of current nodes)] matrix, which when fed the output of the first layer, gives another (`batch_size`X`64`) matrix into the final output layer. 
+
+Finally, the output layer has a [`64` (number of previous nodes) X `4` (number of current nodes)], and as such outputs a final matrix of shape (`batch_size`X`4`), where each row is a separate training example, and each column is the *output* of the $Q$ function if action $a_{column_{num}}$ is taken from that given state. 
+
+To clarify, see below:<br>
 <img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/NeuralNetwork.jpg' width=50%>
 
-# Training the network
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Hourglass%20Not%20Done.png" alt="Hourglass Not Done" width="25" height="25" /> Training the network
 
 The algorithm is as follows:
 
@@ -135,7 +145,7 @@ where $\tau \ll 1$. By using the soft update we ensure the target value $y$ chan
 
 Above shows the progress that the agent makes as we train the network.
 
-# Training the agent
+# <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Rocket.png" alt="Rocket" width="25" height="25" /> Training the agent
 
 We are now ready to train our agent to solve the Lunar Lander environment. In the cell below we will implement the `Deep Q-Learning with Experience Relay` algorithm. 
 
