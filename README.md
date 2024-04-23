@@ -1,4 +1,5 @@
-# Landing on the Moon with Reinforcement Learning
+# Reinforcement Learning (Deep Q Networks) 
+## Landing on the Moon
 
 <table>
   <tr>
@@ -6,13 +7,13 @@
     <td>
       <img src="videos/readMe_crash.gif" width="370" alt="Failed Lunar Lander">
       <br>
-      <p align="center"><strong>Failed Lunar Lander</strong></p>
+      <p align="center"><strong>Untrained Lunar Lander</strong></p>
     </td>
     <!-- Second Image -->
     <td>
       <img src="images/lunar_lander.gif" width="370" alt="Passed Lunar Lander">
       <br>
-      <p align="center"><strong>Passed Lunar Lander</strong></p>
+      <p align="center"><strong>Trained Lunar Lander</strong></p>
     </td>
   </tr>
 </table>
@@ -102,7 +103,7 @@ where $w^-$ and $w$ are the weights of the target-Q network and Q network, respe
 
 ## Architecture
 See below:<br>
-<img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/edit/main/images/NeuralNetwork.jpg' width=50%>
+<img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/NeuralNetwork.jpg' width=50%>
 
 # Training the network
 
@@ -127,6 +128,11 @@ w^-\leftarrow \tau w + (1 - \tau) w^-
 $$
 
 where $\tau \ll 1$. By using the soft update we ensure the target value $y$ changes slowly, which improves stability $ -> (sometimes we do $Q = 0.9Q + 0.1Q_{new}$ so that if the new neural network is worse than the old one, we do a soft update method)
+
+<img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/training_past.jpg' width=50%>
+<br>
+
+Above shows the progress that the agent makes as we train the network.
 
 # Training the agent
 
