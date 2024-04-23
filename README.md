@@ -23,7 +23,7 @@ The OpenAI Gym environment provides LunarLander environment, which is simply a t
 - The two flag poles surround the center 0,0 of the landing pad
 - Lander is allowed to land outside landing pad
 - Lander starts at the top center of the environment
-- Fuel is cheap (infinite)
+- Fuel is cheap ($\infty$)
 - Need 200 points to win
 
 ### The Agent
@@ -52,8 +52,8 @@ The agent learns an optimal policy — mapping `states` to `actions` — through
 </figure>
 Above shows agent-environment loop. Here:
 <ul>
-<li> Agent interacts with environment in discrete steps t=0,1,2,3...
-<li> Each step t, agent uses policy π to select action $A_t$  based on current state $S_t$
+<li> Agent interacts with environment in discrete steps $t$=0,1,2,3...
+<li> Each step $t$, agent uses policy π to select action $A_t$  based on current state $S_t$
 <li> Agent receives reward $R_t$
 <li> Next time step is the new state $S_{t+1}$
 
@@ -62,44 +62,45 @@ When both the state and action space are discrete we can estimate the action-val
 
 $$\ Q(s,a) = R(s) + \gamma \max_{a'}Q(s',a') $$
 
-Here, $Q(s,a)$ is the return if you start in state s, take action a, then behave optimally after that. π(s)=a where a is $max_{a}Q(s,a)$. This only works if you can compute Q(s,a) for every action. 
+Here, $Q(s,a)$ is the return if you start in state $s$, take action $a$, then behave optimally after that. $π(s)$ = $a$ where $a$ is $max_{a}Q(s,a)$. This only works if you can compute $Q(s,a)$ for every action. 
 Note that ${s'}$ means the new state we got to after taking action $a$. The prime represents new action/new state.
 
 The above bellman equation is similar to 
 $$\ f_{w,b}(x)≈y $$
 
-Getting the actual $(x,y)$ points is simple. We do random actions and get various states. Based on these states, we determine x as the (**state,action**) tuple, and $y$ as the right hand side of the bellman equation, as determined by $R(s)$ and $S$, both of which are given.
+Getting the actual $(x,y)$ points is simple. We do random actions and get various states. Based on these states, we determine x as the (**state,action**) , the $(s,a)$ tuple, and $y$ as the right hand side of the bellman equation, as determined by $R(s)$ and $S$, both of which are given.
 
 <img src='https://github.com/AliesTaha/Deep-Q-Learning--Landing-on-the-Moon/blob/main/images/GettingXY.png' width=60%><br>
 
-Above, we see that y is determined by $R(s_{old})$ + $\gamma\$ times the max of the $Q$ of...pay attention... the new reached state $s'$ having taken action $a$. Now, how do we know what the maximum of Q is? We need to calculate Q for all possible actions in state $s^{'}$ to get the maximum. Since Q is recursive, initially we don't know what the Q function is. So at every step, Q here is some guess. 
+Above, we see that $y$ is determined by $R(s_{prev})$ + $\gamma\$ times the max of the $Q$ of...pay attention... the new reached state $s'$ having taken action $a$. Now, how do we know what the maximum of $Q$ is? We need to calculate $Q$ for all possible actions in state $s^{'}$ to get the maximum. Since $Q$ is recursive, initially we don't know what the $Q$ function is. So at every step, $Q$ here is some guess...for now. Don't worry.  
 
-Once we have above data, we train Neural Network to try to predict y as a function of the input x. 
+Once we have above data, we train a $Neural$ $Network$ to try to predict $y$ as a function of the input $x$. Just as we would train a neural network to predict any function in supervised learning, given a training set of input features and outputs (targets). 
 
-So the agent gradually explores the state-action space and updates the **estimate** of action-value function $Q(s,a)$ till it converges to optimal action-value function $\hat{Q}(s,a)$
-#### Problem
-This works for regular discrete state space, but when it's continuous, it's impossible to explore the entire state-action space, and impossible to gradually estimate $Q(s,a)$ till its convergence
+The agent then gets to gradually explore the state-action space and updates the **estimate** of action-value function $Q(s,a)$ till it converges to optimal action-value function $\hat{Q}(s,a)$. We're still not done though. 
 
-#### Solution
-The solution is in **Deep Q Learning** wherein we solve the problem by using a neural network to estimate the action-value function $Q(s,a)≈\hat{Q}*(s,a)$
-- This neural network is the Q-Network, trained by adjusting its weights to minimize mean-squared error in Bellman equation above
+### Problem
+This works for regular discrete state space, since there's only a finite number of state-action space vectors. When it's continuous, however, it's impossible to explore the entire state-action space, and thereby impossible to gradually estimate $Q(s,a)$ till its convergence.
 
-#### One more problem
-Q-Networks are highly unstable. Instead, we use 
+### Solution
+The solution is in **Deep Q Learning** wherein we solve the problem by using *another* neural network to estimate the action-value function $Q(s,a)≈\hat{Q}*(s,a)$. This neural network is the Q-Network, trained by adjusting its weights to minimize mean-squared error in Bellman equation above. 
+Using a single Q-Network is highly unstable. Instead, we use 
 1. Target Network 
 2. Experience Replay
 
 # Creating the networks
-Deep $-$ $Q$ Network -DQN- is a neural network that approximates the action-value function $Q(s,a)$ ≈ $Q^*(s,a)$. This is done by mapping states to $Q$ values. 
+A $Deep-Q$ $Network$ (DQN) is a neural network that approximates the action-value function $Q(s,a)$ ≈ $Q^*(s,a)$. This is done by mapping states to $Q$ values. 
 
 To recap:
-1. We use a neural network to create the optimal action-value function. 
-2. To do that, we create another target neural network called $\hat{Q}$ Network with the same architecture as the original network. 
+1. We use the optimal action-value function to determine what action will be taken at any given stage.
+2. We use a neural network to create the optimal action-value function. 
+3. To do that, we create another target neural network called $\hat{Q}$ Network with the same architecture as the original network.
+
+An analogy to think about is as follows: if the $Q$ Network is the student, constantly learning, the $\hat{Q}$ Network is the teacher, who provides guidance to the student and is also constantly learning, albeit at a much slower and more stable rate. 
 
 Now the equation becomes:
 $$\overbrace{\underbrace{R + \gamma \max_{a'}\hat{Q}(s',a'; w^-)}_{\rm {y~target}} - Q(s,a;w)}^{\rm {Error}} $$
 
-where $w^-$ and $w$ are the weights of the target-Q network and Q network, respectively.
+where $w^-$ and $w$ are the weights of the target-$\hat{Q}$ network and $Q$ network, respectively.
 
 ## Architecture
 See below:<br>
